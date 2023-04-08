@@ -66,8 +66,6 @@ while 1
 
                 subframe = cat(2,subframe1,cat(3,subframe2,subframe2,subframe2));
                 imshow(subframe,'Parent',Axes2)
-                %imwrite(subframe2,'subframe2.bmp');
-                section_image_resized(cat(3,subframe2,subframe2,subframe2));
             end
             hold(Axes1,'off')
         end
@@ -96,37 +94,5 @@ end
         im3 = imfilter(frame,core2);
         im4 = imfilter(frame,core2');
         ed = max(abs(cat(3,im1,im2,im3,im4)),[],3);
-    end
-    function is_success = section_image_resized(img)
-        try
-            resized = imresize(img,[128,128]);                  %图片分辨率转换为128x128
-            %iresized = imresize(img_resized,0.7,"nearest");
-            %imshow(resized);
-            picture_save = ['test\',datestr(now,30),'.bmp'];   %路径(绝对路径可能出错)+实时文件名
-            try
-                bits = check(img);                                 %计算图片位数
-                fprintf("%d",bits);
-            catch details_info
-                fprintf("An error occured:?")
-                disp(details_info.message)
-                disp(details_info.stack)
-            end
-            if int8(bits) == 8
-                imwrite(resized,picture_save);                 %保存图片
-                is_success = ture;
-            else
-                %将24位图变为8位图
-                originalimg=im2double(resized);
-                resized = (originalimg(:,:,1)+originalimg(:,:,2)+originalimg(:,:,3))/3; 
-        
-                imwrite(resized,picture_save);                  %保存图片
-                is_success = true;
-            end
-        catch details_info
-            fprintf("An error occured:?")
-            disp(details_info.message)
-            disp(details_info.stack)
-            is_success = false;
-        end
     end
 end
